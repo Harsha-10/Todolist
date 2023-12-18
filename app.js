@@ -3,7 +3,7 @@ const app=express();
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 var _ =require('lodash');
-mongoose.connect('mongodb+srv://harsha:8ayX9upSNG93OjRW@cluster0.lb8gg2f.mongodb.net/todolistDB');
+mongoose.connect('mongodb+srv://docsuser:docsuser123@cluster0.lb8gg2f.mongodb.net/todolistDB?retryWrites=true&w=majority');
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static("public")); 
 app.set('view engine',"ejs");
@@ -36,25 +36,41 @@ app.get("/",function(req, res){
             }
         })
 });
-app.post("/",function(req, res){
-    var newitem1=req.body.item;
+app.post("/", function(req, res) {
+    var newitem1 = req.body.item;
     const newitem = new additem({
-        name:newitem1
+        name: newitem1
     })
-    if(req.body.list==="Today"){
+
+    if (req.body.list === "Today") {
         newitem.save();
         res.redirect("/");
-    }
-    else{
+    } else {
         const para = req.body.list;
-        clist.findOne({name:para})
-            .then(function(clistarray){
-                clistarray.data.push(newitem);
-                clistarray.save(); 
-                res.redirect("/"+para);
+        clist.findOne({ name: para })
+            .then(function(clistarray) {
+                if (clistarray) {
+                    clistarray.data.push(newitem);
+                    clistarray.save();
+                    res.redirect("/" + para);
+                } else {
+                    const newList = new clist({
+                        name: para,
+                        data: [newitem]
+                    });
+                    newList.save();
+                    console.log("New custom list created");
+                    res.redirect("/" + para);
+                }
             })
+            .catch(function(err) {
+                console.error(err);
+                res.redirect("/");
+            });
     }
 })
+
+
 app.post("/delete",function(req,res){
     const checdid = req.body.check;
     const ListName = req.body.listName;
