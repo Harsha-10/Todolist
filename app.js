@@ -36,41 +36,25 @@ app.get("/",function(req, res){
             }
         })
 });
-app.post("/", function(req, res) {
-    var newitem1 = req.body.item;
+app.post("/",function(req, res){
+    var newitem1=req.body.item;
     const newitem = new additem({
-        name: newitem1
+        name:newitem1
     })
-
-    if (req.body.list === "Today") {
+    if(req.body.list==="Today"){
         newitem.save();
         res.redirect("/");
-    } else {
+    }
+    else{
         const para = req.body.list;
-        clist.findOne({ name: para })
-            .then(function(clistarray) {
-                if (clistarray) {
-                    clistarray.data.push(newitem);
-                    clistarray.save();
-                    res.redirect("/" + para);
-                } else {
-                    const newList = new clist({
-                        name: para,
-                        data: [newitem]
-                    });
-                    newList.save();
-                    console.log("New custom list created");
-                    res.redirect("/" + para);
-                }
+        clist.findOne({name:para})
+            .then(function(clistarray){
+                clistarray.data.push(newitem);
+                clistarray.save(); 
+                res.redirect("/"+para);
             })
-            .catch(function(err) {
-                console.error(err);
-                res.redirect("/");
-            });
     }
 })
-
-
 app.post("/delete",function(req,res){
     const checdid = req.body.check;
     const ListName = req.body.listName;
