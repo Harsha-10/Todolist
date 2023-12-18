@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
     <head>
@@ -33,40 +32,4 @@
         
 
     </body>
-=======
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>To Do List</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="icon" href="data:,">
-        <link rel="stylesheet" href="css/styles.css">
-    </head>
-    <body>
-        <div class="box" id="heading">
-            <h1><%=DayType%></h1>
-        </div>
-        <div class="box">
-            <% newlistitems.forEach(function(item){ %>
-                <form action="/delete" method="post" >
-                <div class="item">
-                <input type="checkbox" name="check" value="<%=item._id%>" onChange="this.form.submit()">
-                <p><%=item.name%></p>
-                </div>
-                <input type="hidden" name="listName" value="<%=DayType%>"></input>
-                </form>
-            <%})%>
-            <form action="/" method="post">
-                <input type="text" name="item" placeholder="New Item">
-                <button name="list" value=<%=DayType%> >+</button>
-            </form>
-        </div>
-        
-        
-
-    </body>
->>>>>>> master
 </html>
